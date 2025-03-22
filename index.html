@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Cricket Streaming</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            text-align: center;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #video-container {
+            position: relative;
+            display: inline-block;
+        }
+        video {
+            width: 90%;
+            max-width: 800px;
+            border: 2px solid white;
+            border-radius: 10px;
+        }
+        #controls {
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: gray;
+            color: white;
+        }
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #222;
+            color: #bbb;
+            font-size: 14px;
+        }
+        footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live Cricket Streaming</h1>
+    <div id="video-container">
+        <video id="video"></video>
+        <div id="controls">
+            <button onclick="playVideo()">Play</button>
+            <button onclick="pauseVideo()">Pause</button>
+            <button onclick="muteVideo()">Mute/Unmute</button>
+            <button onclick="fullscreenVideo()">Fullscreen</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 Live Cricket Streaming | Made with 💛 by <a href="https://t.me/Jeffy_dev" target="_blank">Jeffy</a>
+    </footer>
+
+    <script>
+        var video = document.getElementById('video');
+        var videoSrc = "https://edge3-moblive.yuppcdn.net/drm1/smil:starsports2drm.smil/playlist.m3u8"; // Replace with your .m3u8 link
+
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', function () {
+                video.play();
+            });
+        }
+
+        // Custom Controls
+        function playVideo() {
+            video.play();
+        }
+
+        function pauseVideo() {
+            video.pause();
+        }
+
+        function muteVideo() {
+            video.muted = !video.muted;
+        }
+
+        function fullscreenVideo() {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.mozRequestFullScreen) {
+                video.mozRequestFullScreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
+        }
+    </script>
+</body>
+</html>
